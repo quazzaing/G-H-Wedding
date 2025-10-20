@@ -1,7 +1,26 @@
-document.getElementById("rsvp-form").addEventListener("submit", function (e) {
+document.getElementById("rsvp-form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  this.classList.add("hidden");
-  document.getElementById("confirmation").classList.remove("hidden");
+  const formData = new FormData(e.target);
+
+  const data = {
+    name: formData.get("name"),
+    rsvpBool: formData.get("rsvp-bool"),
+    message: formData.get("message"),
+    dietaryRequirements: formData.get("dietary-requirements")
+
+
+  };
+  console.log(JSON.stringify(data))
+  const url = "https://script.google.com/macros/s/AKfycbylH3Y8XdDZx0lYsqDuC09np5k7mxQR_MqLRjhiLkncWmzW3lNrp5r08x0cQ0ykrTGCXg/exec"
+  const response = await fetch(url, {
+    method: "POST", 
+    redirect: "follow",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  if (response.ok) alert("Message sent!");
+  else alert("Error sending message");
 });
 
 const tourismImageDiv = document.getElementById("visit-places");
