@@ -2,21 +2,15 @@ document.getElementById("rsvp-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
 
-  const data = {
-    name: formData.get("name"),
-    rsvpBool: formData.get("rsvp-bool"),
-    message: formData.get("message"),
-    dietaryRequirements: formData.get("dietary-requirements")
-
-
-  };
-  console.log(JSON.stringify(data))
-  const url = "https://script.google.com/macros/s/AKfycbylH3Y8XdDZx0lYsqDuC09np5k7mxQR_MqLRjhiLkncWmzW3lNrp5r08x0cQ0ykrTGCXg/exec"
+  const rsvpBool = document.querySelector(
+    'input[name="rsvp-bool"]:checked'
+  )?.value;
+  formData.append("rsvpBool", rsvpBool);
+  const url =
+    "https://script.google.com/macros/s/AKfycbzGkK1DLXTvlutQ3mXHpwUzcH1iFGc49D43TqM0w4S9d_Nvw7asYPuVnwiDSOFFM23_nA/exec";
   const response = await fetch(url, {
-    method: "POST", 
-    redirect: "follow",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    method: "POST",
+    body: formData,
   });
 
   if (response.ok) alert("Message sent!");
